@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "owncontext",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-12",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "workers_dev": true,
+  "vars": {
+    "GITHUB_OWNER": "",
+    "GITHUB_REPO": "",
+    "ALLOWED_GITHUB_LOGIN": "",
+    "ALLOWED_GITHUB_ID": "",
+    "TIMEZONE": "UTC",
+    "LOCALE": "en",
+    "ENABLED_TOOLS": ""
+  },
+  "kv_namespaces": [
+    { "binding": "OAUTH_KV", "id": "" }
+  ],
+  "observability": { "enabled": false }
+}

@@ -1,0 +1,21 @@
+name: Feature request
+description: Propose a focused improvement to personal context storage.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the use case with synthetic examples, without private notes or identifiers.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Include expected consent, permissions, and data retention where relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
