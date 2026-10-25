@@ -2,27 +2,17 @@
 
 [简体中文](README.zh-CN.md)
 
-## Status: preview
+OwnContext lets developers who use multiple AI clients read and correct shared Markdown notes in a private GitHub repository through a single-user, self-hosted MCP server.
 
-Verified locally on macOS with Node 24: lint, type checking, unit/integration tests, a dry-run Worker build, and the account-free demo/setup preview from a fresh local clone. Tests cover read/write scopes, correction, duplicate suppression, stale-SHA rejection, and MCP Streamable HTTP against the Worker handler with fake GitHub/KV. These checks do not exercise a deployed service.
+**Preview:** the account-free local demo works; live deployment, OAuth and AI-client acceptance are still pending.
 
-Still pending: deployment with real GitHub/Cloudflare accounts; live OAuth sign-in, consent, token refresh and revocation; cross-client read/save/correction/conflict acceptance in Claude Code and claude.ai; and a real-client recording. Linux CI is configured; native Windows is unverified. Treat this as preview software, not a completed live-client release.
+<img src="docs/assets/demo.gif" alt="Synthetic local demo: save a preference, read and correct its Markdown, then reject a stale-SHA write." width="760">
 
-OwnContext is a single-user, self-hosted MCP server that lets AI clients read and correct the same plain-text context in your private GitHub repository.
+24.5-second replay of real `npm run demo` output, paced for reading. Both tool clients and storage are in memory; this is not a live AI-client recording.
 
-## Why it exists
+## Try it without accounts
 
-Context should survive a change of AI client. Markdown and Git keep it portable; `stated` and `inferred` labels separate your statements from deductions; source references make an answer traceable; SHA-checked updates let a client correct a note without overwriting a newer edit.
-
-The server supplies storage and tools. Your client decides what to read and how to merge a correction. Labels and source references are client-supplied, not independent verification of a claim.
-
-## A 30-second look
-
-**Recording placeholder:** save a synthetic preference in one client, read it in another, correct it, then show a rejected stale edit. A recording has not been published. The local demo below exercises this sequence today.
-
-## Try the demo first
-
-From a checkout of this source, with **Node.js 24.11 or newer** and npm:
+From a [source checkout](https://github.com/clean99/owncontext), with **Node.js 24.11+** and npm:
 
 ```sh
 npm ci --registry=https://registry.npmjs.org
@@ -30,7 +20,19 @@ npm run demo
 npm run setup -- --dry-run
 ```
 
-After dependency installation, the demo and setup preview run offline. The demo uses synthetic notes and two in-memory tool clients. It prints a Markdown correction and verifies duplicate suppression and a stale-SHA conflict. It does not start an HTTP server or change a repository.
+After dependency installation, both commands run offline. The demo uses synthetic notes to check duplicate suppression, correction and stale-SHA rejection. It starts no HTTP server and changes no repository. Setup's dry run prints the deployment plan without account access or configuration writes.
+
+## Status: preview
+
+Verified locally on macOS with Node 24: lint, type checking, unit/integration tests, a dry-run Worker build, and the demo/setup preview from a fresh local clone. MCP Streamable HTTP tests use the real Worker handler with fake GitHub/KV.
+
+Still pending: real GitHub/Cloudflare deployment; live OAuth sign-in, consent, refresh and revocation; and cross-client read/save/correction/conflict acceptance in Claude Code and claude.ai. Linux CI is configured; native Windows is unverified. The GIF above demonstrates the local tool logic only.
+
+## Why it exists
+
+Context should survive a change of AI client. Markdown and Git keep it portable; `stated` and `inferred` labels separate your statements from deductions; source references make an answer traceable; SHA-checked updates let a client correct a note without overwriting a newer edit.
+
+The server supplies storage and tools. Your client decides what to read and how to merge a correction. Labels and source references are client-supplied, not independent verification of a claim.
 
 ## Set up your own instance
 
@@ -42,7 +44,7 @@ npm run setup
 
 Live setup needs Git, GitHub CLI, your GitHub and Cloudflare accounts, a GitHub OAuth App, and a repository-scoped token. It inspects those accounts and asks you to type `deploy` before creating resources or publishing the Worker. It can create a private notes repository, add missing synthetic template files, provision OAuth KV, and deploy. Existing template files are preserved.
 
-Your endpoint is `https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/mcp`. Start with read-only consent. Writes require a separate checkbox on the consent page.
+Setup prints your endpoint, for example `https://owncontext.example/mcp`. Start with read-only consent. Writes require a separate checkbox on the consent page.
 
 ## Clients and platforms
 

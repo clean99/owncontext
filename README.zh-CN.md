@@ -2,27 +2,17 @@
 
 [English](README.md)
 
-## Status: preview
+OwnContext 面向使用多个 AI 客户端的开发者，通过单用户、自托管的 MCP 服务，让客户端共同读取和修正私有 GitHub 仓库里的 Markdown 笔记。
 
-已在 macOS、Node 24 下验证 lint、类型检查、单元与集成测试、Worker 构建预演，以及从全新本地克隆运行的免账号 demo 和 setup 预览。测试覆盖读写权限、修正、重复保存和旧 SHA 冲突；MCP Streamable HTTP 测试调用真实 Worker handler，GitHub 和 KV 使用测试替身。验证范围为本地执行。
+**预览版：** 免账号的本地 demo 已可运行，真实部署、OAuth 和 AI 客户端验收仍待完成。
 
-待验收：真实 GitHub/Cloudflare 账号部署；线上 OAuth 登录、授权、令牌刷新和撤销；Claude Code 与 claude.ai 跨客户端读取、保存、修正和冲突处理；真实客户端录屏。Linux CI 已配置，原生 Windows 待验证。当前版本为预览版，线上客户端验收仍待完成。
+<img src="docs/assets/demo.gif" alt="虚构资料的本地演示：保存偏好，读取并修正 Markdown，拒绝旧 SHA 写入。" width="760">
 
-OwnContext 是一个单用户、自托管的 MCP 服务，让不同 AI 客户端读取和修正同一份私有 GitHub 仓库中的纯文本上下文。
+动图重放 `npm run demo` 的真实输出，放慢到 24.5 秒供阅读。两个工具客户端和存储均在内存中运行，演示范围仅限本地工具逻辑。
 
-## 用途：换客户端也保留上下文
+## 快速体验：免账号运行
 
-Markdown 和 Git 让资料可以迁移。`stated` 标记用户明确说过的话，`inferred` 标记推断；来源引用方便追溯，SHA 校验让客户端修正笔记时避开他人的较新修改。
-
-服务负责存储和提供工具。客户端决定读取哪些资料、怎样合并修正。标签和来源由客户端填写，其真实性仍需核对。
-
-## 演示：保存后再修正
-
-**30 秒录屏占位：** 在一个客户端保存虚构偏好，在另一个客户端读取并修正，最后展示旧 SHA 写入被拒绝。录屏待制作，下面的本地 demo 已可运行这条流程。
-
-## 快速体验：先运行本地 demo
-
-准备源码目录、**Node.js 24.11 或更新版本**及 npm，运行：
+准备[源码目录](https://github.com/clean99/owncontext)、**Node.js 24.11+** 及 npm，运行：
 
 ```sh
 npm ci --registry=https://registry.npmjs.org
@@ -30,7 +20,19 @@ npm run demo
 npm run setup -- --dry-run
 ```
 
-安装依赖后，demo 和 setup 预览均可离线运行。demo 使用虚构资料和两个内存工具客户端，打印 Markdown 修改，并检查重复保存和旧 SHA 冲突。执行期间的数据留在内存，源码仓库保持原样，也不会启动 HTTP 服务。
+安装依赖后，这两个命令均可离线运行。demo 用虚构笔记检查重复保存、修正和旧 SHA 冲突，数据留在内存，源码仓库保持原样。setup 预览只打印部署计划，账号和配置保持原样。
+
+## 状态：本地验证已完成
+
+已在 macOS、Node 24 下验证 lint、类型检查、单元与集成测试、Worker 构建预演，以及全新本地克隆中的 demo 和 setup 预览。MCP Streamable HTTP 测试调用真实 Worker handler，GitHub 和 KV 使用测试替身。
+
+待验收：真实 GitHub/Cloudflare 部署；线上 OAuth 登录、授权、令牌刷新和撤销；Claude Code 与 claude.ai 跨客户端读取、保存、修正和冲突处理。Linux CI 已配置，原生 Windows 待验证。上方动图展示的是本地工具逻辑。
+
+## 用途：换客户端也保留上下文
+
+Markdown 和 Git 让资料可以迁移。`stated` 标记用户明确说过的话，`inferred` 标记推断；来源引用方便追溯，SHA 校验让客户端修正笔记时避开他人的较新修改。
+
+服务负责存储和提供工具。客户端决定读取哪些资料、怎样合并修正。标签和来源由客户端填写，其真实性仍需核对。
 
 ## 部署：使用自己的账号
 
@@ -42,7 +44,7 @@ npm run setup
 
 真实 setup 需要 Git、GitHub CLI、你自己的 GitHub 和 Cloudflare 账号、GitHub OAuth App，以及限定仓库的访问令牌。脚本会查询账号状态，要求输入 `deploy` 后才创建资源或发布 Worker。它可以创建私有笔记仓库、补齐缺失的虚构模板文件、创建 OAuth KV 并部署；同名已有模板文件会保留。
 
-服务地址为 `https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/mcp`。首次连接建议保留默认只读权限，写入权限需在授权页单独勾选。
+setup 会打印你的服务地址，例如 `https://owncontext.example/mcp`。首次连接建议保留默认只读权限，写入权限需在授权页单独勾选。
 
 ## 兼容性：按验证范围使用
 
