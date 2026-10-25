@@ -4,7 +4,7 @@
 
 Do not put vulnerabilities, access tokens, OAuth codes, private note contents, or working exploits in public issues or pull requests.
 
-On the project's GitHub repository, use **Security → Advisories → Report a vulnerability** to open a private report. This route requires the repository owner to enable GitHub private vulnerability reporting; it is a publication prerequisite, not something the source checkout enables. If the button is absent, open a public issue containing only “Please enable private vulnerability reporting” and wait for a private channel before sharing details. No monitored security email address is advertised.
+On the project's GitHub repository, use **Security → Advisories → Report a vulnerability** to open a private report through [GitHub private vulnerability reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability). This route requires the repository owner to enable GitHub private vulnerability reporting; it is a publication prerequisite, not something the source checkout enables. If the button is absent, open a public issue containing only “Please enable private vulnerability reporting” and wait for a private channel before sharing details. No monitored security email address is advertised.
 
 Include the affected version or commit, a synthetic reproduction, expected and actual behavior, impact, and suggested mitigation if available. Remove credentials, personal data, account identifiers, and private repository URLs. Agree on disclosure timing with the maintainer before publication. No response-time SLA or bug bounty is offered.
 

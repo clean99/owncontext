@@ -2,6 +2,12 @@
 
 [English](README.md)
 
+## Status: preview
+
+已在 macOS、Node 24 下验证 lint、类型检查、单元与集成测试、Worker 构建预演，以及从全新本地克隆运行的免账号 demo 和 setup 预览。测试覆盖读写权限、修正、重复保存和旧 SHA 冲突；MCP Streamable HTTP 测试调用真实 Worker handler，GitHub 和 KV 使用测试替身。验证范围为本地执行。
+
+待验收：真实 GitHub/Cloudflare 账号部署；线上 OAuth 登录、授权、令牌刷新和撤销；Claude Code 与 claude.ai 跨客户端读取、保存、修正和冲突处理；真实客户端录屏。Linux CI 已配置，原生 Windows 待验证。当前版本为预览版，线上客户端验收仍待完成。
+
 OwnContext 是一个单用户、自托管的 MCP 服务，让不同 AI 客户端读取和修正同一份私有 GitHub 仓库中的纯文本上下文。
 
 ## 用途：换客户端也保留上下文
@@ -89,6 +95,7 @@ OwnContext 自身只提供存储和工具，不调用模型，也未接入分析
 - [隐私与数据流](docs/zh/privacy-and-data-flow.md)
 - [权限说明](docs/zh/permissions-and-scopes.md)
 - [费用与限额](docs/zh/costs.md)
+- [本地基准方法与原始数据](docs/benchmarks.json)（`npm run benchmark`；GitHub 使用内存替身，数值仅代表本地耗时）
 - [升级与回退](docs/zh/upgrade-and-rollback.md)
 - [恢复与卸载](docs/zh/recovery-and-uninstall.md)
 - [兼容性说明](docs/zh/compatibility.md)

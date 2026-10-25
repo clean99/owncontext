@@ -2,6 +2,12 @@
 
 [简体中文](README.zh-CN.md)
 
+## Status: preview
+
+Verified locally on macOS with Node 24: lint, type checking, unit/integration tests, a dry-run Worker build, and the account-free demo/setup preview from a fresh local clone. Tests cover read/write scopes, correction, duplicate suppression, stale-SHA rejection, and MCP Streamable HTTP against the Worker handler with fake GitHub/KV. These checks do not exercise a deployed service.
+
+Still pending: deployment with real GitHub/Cloudflare accounts; live OAuth sign-in, consent, token refresh and revocation; cross-client read/save/correction/conflict acceptance in Claude Code and claude.ai; and a real-client recording. Linux CI is configured; native Windows is unverified. Treat this as preview software, not a completed live-client release.
+
 OwnContext is a single-user, self-hosted MCP server that lets AI clients read and correct the same plain-text context in your private GitHub repository.
 
 ## Why it exists
@@ -89,6 +95,7 @@ The software is free under Apache-2.0. You supply your own GitHub and Cloudflare
 - [Privacy and data flow](docs/en/privacy-and-data-flow.md)
 - [Permissions and scopes](docs/en/permissions-and-scopes.md)
 - [Costs and limits](docs/en/costs.md)
+- [Local benchmark method and raw samples](docs/benchmarks.json) (`npm run benchmark`; in-memory GitHub substitute, not deployed latency)
 - [Upgrade and rollback](docs/en/upgrade-and-rollback.md)
 - [Recovery and uninstall](docs/en/recovery-and-uninstall.md)
 - [Compatibility](docs/en/compatibility.md)

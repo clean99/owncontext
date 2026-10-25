@@ -16,7 +16,7 @@ npm run check:release
 npm run build
 ```
 
-`lint` includes TypeScript checking and ESLint. Tests use synthetic fixtures and fake GitHub/KV; they do not need accounts. `build` creates an ignored `.cache/build/wrangler.json` with a synthetic KV ID, runs Wrangler `deploy --dry-run`, and writes a local bundle under ignored `dist/worker/`. It leaves the root config unchanged. CI runs these checks without deployment secrets. A successful build verifies packaging, not live account permissions or OAuth behavior.
+`lint` includes TypeScript checking and ESLint. Tests use synthetic fixtures and fake GitHub/KV; they do not need accounts. `build` clears old `dist/` output, creates an ignored `.cache/build/wrangler.json` with a synthetic KV ID, and runs Wrangler `deploy --dry-run`. Wrangler's esbuild wrapper forces an absolute `sourceRoot`; the build converts its maps to relative `sources` with an empty `sourceRoot` and removes `sourcesContent` before retaining the bundle in `dist/worker/`. Intermediate bundles are removed, and a failed artifact check removes `dist/`. The root config stays unchanged. CI also runs `npm run check:build` to reject filesystem paths and embedded source text in distribution artifacts. `dist/`, `.cache/`, `.wrangler/`, and `coverage/` are Git-ignored and excluded by the package's source-only file allowlist; npm publication remains disabled by `private: true`. A successful build verifies packaging, not live account permissions or OAuth behavior.
 
 Real setup and doctor acceptance have external effects. Use only your own accounts and explicitly selected synthetic data when validating them. Do not include credentials or personal repository state in a patch.
 
@@ -38,6 +38,10 @@ Supply project-specific identifiers through `OWNCONTEXT_PRIVATE_MARKERS`, a JSON
 Only reserved example domains are accepted for email examples. Source dependencies must resolve through `https://registry.npmjs.org`. The scanner is a local guard, not a general PII detector: it cannot recognize every name, secret format, encoded value, or historical commit. Inspect the final diff and entire history before publication. Do not bypass findings by weakening rules or encoding sensitive material.
 
 Before public release, enable GitHub private vulnerability reporting, verify the report entry point, and complete live OAuth/client acceptance. Add the 30-second recording only after it exists and contains synthetic data. CI contains no publishing or deployment step.
+
+`npm run benchmark` prints the method and raw latency samples for 100-file and 1,000-file synthetic Markdown repositories using the demo's in-memory GitHub substitute. [Recorded samples](docs/benchmarks.json) measure local read, paginated search, full search and SHA-checked save operations. They exclude real network, OAuth and Worker execution; use a deployment to measure production latency and platform quotas.
+
+The `undici` override pins the patched 7.30.1 HTTP dependency used by local tooling; keep it until the bundled Miniflare version resolves a patched release without an override. Check `npm audit` when updating dependencies.
 
 ## Issues and conduct
 
