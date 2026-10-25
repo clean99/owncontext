@@ -88,6 +88,8 @@ OwnContext 自身只提供存储和工具，不调用模型，也未接入分析
 - [快速开始](docs/zh/quickstart.md)
 - [隐私与数据流](docs/zh/privacy-and-data-flow.md)
 - [权限说明](docs/zh/permissions-and-scopes.md)
+- [费用与限额](docs/zh/costs.md)
+- [升级与回退](docs/zh/upgrade-and-rollback.md)
 - [恢复与卸载](docs/zh/recovery-and-uninstall.md)
 - [兼容性说明](docs/zh/compatibility.md)
 

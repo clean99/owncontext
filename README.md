@@ -88,6 +88,8 @@ The software is free under Apache-2.0. You supply your own GitHub and Cloudflare
 - [Quickstart](docs/en/quickstart.md)
 - [Privacy and data flow](docs/en/privacy-and-data-flow.md)
 - [Permissions and scopes](docs/en/permissions-and-scopes.md)
+- [Costs and limits](docs/en/costs.md)
+- [Upgrade and rollback](docs/en/upgrade-and-rollback.md)
 - [Recovery and uninstall](docs/en/recovery-and-uninstall.md)
 - [Compatibility](docs/en/compatibility.md)
 
