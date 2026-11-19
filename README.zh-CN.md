@@ -4,7 +4,7 @@
 
 OwnContext 面向使用多个 AI 客户端的开发者，通过单用户、自托管的 MCP 服务，让客户端共同读取和修正私有 GitHub 仓库里的 Markdown 笔记。
 
-**预览版：** 免账号的本地 demo 已可运行，真实部署、OAuth 和 AI 客户端验收仍待完成。
+**预览版：** 本地 demo、真实部署、线上 OAuth 和 MCP SDK 检查已通过，Claude Code 与 claude.ai 客户端内验收仍待完成。
 
 <img src="docs/assets/demo.gif" alt="虚构资料的本地演示：保存偏好，读取并修正 Markdown，拒绝旧 SHA 写入。" width="760">
 
@@ -22,11 +22,17 @@ npm run setup -- --dry-run
 
 安装依赖后，这两个命令均可离线运行。demo 用虚构笔记检查重复保存、修正和旧 SHA 冲突，数据留在内存，源码仓库保持原样。setup 预览只打印部署计划，账号和配置保持原样。
 
-## 状态：本地验证已完成
+## 状态：线上 SDK 验收已通过
 
 已在 macOS、Node 24 下验证 lint、类型检查、单元与集成测试、Worker 构建预演，以及全新本地克隆中的 demo 和 setup 预览。MCP Streamable HTTP 测试调用真实 Worker handler，GitHub 和 KV 使用测试替身。
 
-待验收：真实 GitHub/Cloudflare 部署；线上 OAuth 登录、授权、令牌刷新和撤销；Claude Code 与 claude.ai 跨客户端读取、保存、修正和冲突处理。Linux CI 已配置，原生 Windows 待验证。上方动图展示的是本地工具逻辑。
+已在一套真实 Cloudflare Workers 部署和私有 GitHub 仓库上，用独立的 MCP SDK 客户端通过以下检查：
+
+- OAuth 发现、公开客户端注册、本人手动授予读写权限，以及授权码 + PKCE 登录。
+- 工具发现、上下文加载、搜索和读取。两个 SDK 连接共同验证了虚构笔记保存、重复保存去重、当前 SHA 修正和旧 SHA 冲突拒绝。
+- 令牌刷新、访问令牌及刷新授权撤销、撤销后拒绝访问，`npm run doctor` 返回成功。
+
+待验收：在 Claude Code 与 claude.ai 内读取、保存、修正笔记和处理冲突，需要本人分别添加连接器并授权。Linux CI 已配置，原生 Windows 待验证。上方动图展示的是本地工具逻辑。
 
 ## 用途：换客户端也保留上下文
 

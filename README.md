@@ -4,7 +4,7 @@
 
 OwnContext lets developers who use multiple AI clients read and correct shared Markdown notes in a private GitHub repository through a single-user, self-hosted MCP server.
 
-**Preview:** the account-free local demo works; live deployment, OAuth and AI-client acceptance are still pending.
+**Preview:** the local demo and live deployment, OAuth and MCP SDK checks pass; acceptance inside Claude Code and claude.ai is still pending.
 
 <img src="docs/assets/demo.gif" alt="Synthetic local demo: save a preference, read and correct its Markdown, then reject a stale-SHA write." width="760">
 
@@ -26,7 +26,13 @@ After dependency installation, both commands run offline. The demo uses syntheti
 
 Verified locally on macOS with Node 24: lint, type checking, unit/integration tests, a dry-run Worker build, and the demo/setup preview from a fresh local clone. MCP Streamable HTTP tests use the real Worker handler with fake GitHub/KV.
 
-Still pending: real GitHub/Cloudflare deployment; live OAuth sign-in, consent, refresh and revocation; and cross-client read/save/correction/conflict acceptance in Claude Code and claude.ai. Linux CI is configured; native Windows is unverified. The GIF above demonstrates the local tool logic only.
+Verified on one live Cloudflare Workers deployment backed by a private GitHub repository, using standalone MCP SDK clients:
+
+- OAuth discovery, public-client registration, owner-approved read/write consent and authorization-code + PKCE sign-in.
+- Tool discovery, context loading, search and reads; synthetic note saving, duplicate suppression, current-SHA correction and stale-SHA rejection across two SDK connections.
+- Token refresh, access-token and refresh-grant revocation, refusal of revoked tokens, and a successful `npm run doctor`.
+
+Still pending: read/save/correction/conflict acceptance inside Claude Code and claude.ai, after the owner adds and authorizes the connector in each client. Linux CI is configured; native Windows is unverified. The GIF above demonstrates the local tool logic only.
 
 ## Why it exists
 
