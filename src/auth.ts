@@ -239,7 +239,7 @@ export async function handleAuthorization(request: Request, env: Env): Promise<R
     const details = await oauth.describeConsent(authorization);
     const consent = await oauth.beginConsent(authorization);
     consent.headers.set('Content-Type', 'text/html; charset=utf-8');
-    consent.headers.set('Referrer-Policy', 'no-referrer');
+    consent.headers.set('Referrer-Policy', 'same-origin');
     consent.headers.set('X-Content-Type-Options', 'nosniff');
     return new Response(consentPage(details, consent.handle, env), { headers: consent.headers });
   } catch (error) {

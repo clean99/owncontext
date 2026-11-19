@@ -149,10 +149,36 @@ describe('OAuth authorization', () => {
     expect(new URL(response.headers.get('Location')!).searchParams.get('code')).toBeTruthy();
   });
 
+  it('preserves the browser Origin on same-origin consent form submissions', async () => {
+    const f = fixture();
+    const auth = await begin(f);
+    // no-referrer makes browser form POSTs send Origin: null, even to the same origin.
+    expect(auth.page.headers.get('Referrer-Policy')).toBe('same-origin');
+    const response = await f.send(new Request(`${ORIGIN}/authorize`, {
+      method: 'POST', headers: { Cookie: cookie(auth.page), Origin: ORIGIN, 'Sec-Fetch-Site': 'same-origin' },
+      body: new URLSearchParams({ handle: auth.handle!, decision: 'approve' }),
+    }));
+    expect(response.status).toBe(302);
+    expect(new URL(response.headers.get('Location')!).origin).toBe('https://github.com');
+  });
+
+  it.each(['null', 'https://attacker.example'])('rejects consent from Origin %s even with a valid cookie and handle', async origin => {
+    const f = fixture();
+    const auth = await begin(f);
+    const response = await f.send(new Request(`${ORIGIN}/authorize`, {
+      method: 'POST', headers: { Cookie: cookie(auth.page), Origin: origin, 'Sec-Fetch-Site': 'same-origin' },
+      body: new URLSearchParams({ handle: auth.handle!, decision: 'approve' }),
+    }));
+    expect(response.status).toBe(400);
+    expect(await response.text()).toBe('Authorization form must be submitted from this server.');
+    expect(response.headers.get('Location')).toBeNull();
+    expect([...f.kv.records.keys()].some(key => key.includes('upstream'))).toBe(false);
+  });
+
   it('rejects a forged consent POST without its browser cookie', async () => {
     const f = fixture();
     const auth = await begin(f);
-    const response = await f.send(new Request(`${ORIGIN}/authorize`, { method: 'POST', body: new URLSearchParams({ handle: auth.handle!, decision: 'approve' }) }));
+    const response = await f.send(new Request(`${ORIGIN}/authorize`, { method: 'POST', headers: { Origin: ORIGIN }, body: new URLSearchParams({ handle: auth.handle!, decision: 'approve' }) }));
     expect(response.status).toBe(400);
     expect(response.headers.get('Location')).toBeNull();
   });
